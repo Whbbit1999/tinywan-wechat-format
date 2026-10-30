@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "node test-render.mjs"
+    "test": "node test-render.mjs && node test-footer.mjs"
   },
   "dependencies": {
     "highlight.js": "^11.11.1",

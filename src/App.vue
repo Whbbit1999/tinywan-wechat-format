@@ -21,12 +21,32 @@
       @clear="clear"
     />
     <div class="panes">
-      <EditorPane
-        ref="editor"
-        v-model="markdown"
-        @md-file="onMdFile"
-        @image-files="onImageFiles"
-      />
+      <div class="editor-column">
+        <EditorPane
+          ref="editor"
+          v-model="markdown"
+          @md-file="onMdFile"
+          @image-files="onImageFiles"
+        />
+        <details class="footer-settings">
+          <summary>公共文案{{ footer.trim() ? (footerEnabled ? ' · 已启用' : ' · 已停用') : ' · 未设置' }}</summary>
+          <div class="footer-settings-body">
+            <label class="footer-toggle">
+              <input v-model="footerEnabled" type="checkbox">
+              自动附加到文章末尾
+            </label>
+            <label for="article-footer">文末文案（支持 Markdown）</label>
+            <textarea
+              id="article-footer"
+              v-model="footer"
+              rows="5"
+              placeholder="---&#10;&#10;—— 如果这篇对你有帮助 ——&#10;&#10;**点赞 · 转发**，是对我最大的支持"
+              spellcheck="false"
+            ></textarea>
+            <p>自动保存在当前浏览器。替换或清空正文不影响文案；取消勾选可暂时停用。</p>
+          </div>
+        </details>
+      </div>
       <PreviewPane ref="preview" :html="html" :warnings="warnings" :mode="previewMode" />
     </div>
     <ToastTip ref="toast" />
@@ -48,7 +68,7 @@ const editor = ref(null)
 const preview = ref(null)
 const toast = ref(null)
 
-const { markdown, themeId, themes, showLineNumbers, toggleLineNumbers, html, warnings, imageCount, lastImagesInfo, stats, loadMarkdownFile, addImages, clear: clearAll } = useFormatter()
+const { markdown, footer, footerEnabled, themeId, themes, showLineNumbers, toggleLineNumbers, html, warnings, imageCount, lastImagesInfo, stats, loadMarkdownFile, addImages, clear: clearAll } = useFormatter()
 
 const statusText = computed(() => `${stats.value.chars} 字 · ${imageCount.value} 张图片`)
 
